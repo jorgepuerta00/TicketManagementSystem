@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Email\EmailService\EmailService.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Application\" />
+    <None Remove="Domain\" />
+    <None Remove="Infrastructure\" />
+    <None Remove="Application\Common\" />
+    <None Remove="Infrastructure\Persistence\" />
+    <None Remove="Infrastructure\Service\" />
+    <None Remove="Domain\TicketAggregate\" />
+    <None Remove="Domain\UserAggregate\" />
+    <None Remove="Application\Common\Exceptions\" />
+    <None Remove="Application\Common\ExtensionMethods\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Application\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Infrastructure\" />
+    <Folder Include="Application\Common\" />
+    <Folder Include="Infrastructure\Persistence\" />
+    <Folder Include="Domain\TicketAggregate\" />
+    <Folder Include="Domain\UserAggregate\" />
+    <Folder Include="Application\Common\Exceptions\" />
+    <Folder Include="Application\Common\ExtensionMethods\" />
+  </ItemGroup>
+</Project>
