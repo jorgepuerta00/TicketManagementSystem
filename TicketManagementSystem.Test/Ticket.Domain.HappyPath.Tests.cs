@@ -7,13 +7,44 @@ namespace TicketManagementSystem.Test
     public class HappyPathTicketDomainTests
     {
         private UserRepositoryMock _userRepository;
-        private NullUserRepositoryMock _nullUserRepository;
 
         [SetUp]
         public void Setup()
         {
             _userRepository = new UserRepositoryMock();
-            _nullUserRepository = new NullUserRepositoryMock();
+        }
+
+        [Test]
+        public void LowPriorityTest()
+        {
+            var title = "System Crash";
+            var priority = Priority.Low;
+            var assignedTo = "Johan";
+            var createdTime = DateTime.UtcNow;
+            var isPayingCustomer = true;
+
+            PriorityManagerFactory factory = factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+
+            switch (priority)
+            {
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+            };
+
+            factory.RaisedPriority();
+            factory.CalculatePrice();
+            factory.NotifyAdministrator();
+
+            Assert.AreEqual(Priority.Medium, factory.Priority);
         }
 
         [Test]
@@ -25,13 +56,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -48,13 +89,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow.AddDays(-3);
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -71,13 +122,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -94,13 +155,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -117,13 +188,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow.AddDays(-3);
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -140,13 +221,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -163,13 +254,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -186,13 +287,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -209,13 +320,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -232,13 +353,23 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
@@ -255,87 +386,28 @@ namespace TicketManagementSystem.Test
             var createdTime = DateTime.UtcNow;
             var isPayingCustomer = true;
 
-            PriorityManagerFactory factory = priority switch
+            PriorityManagerFactory factory = null;
+
+            switch (priority)
             {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
+                case Priority.Low:
+                    factory = new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.Medium:
+                    factory = new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
+
+                case Priority.High:
+                    factory = new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository);
+                    break;
             };
+
             factory.RaisedPriority();
             factory.CalculatePrice();
             factory.NotifyAdministrator();
 
             Assert.AreEqual(100, factory.Price);
-        }
-
-        [Test]
-        public void LowPriorityWasNotPayTest()
-        {
-            var title = "System Crash";
-            var priority = Priority.Low;
-            var assignedTo = "Johan";
-            var createdTime = DateTime.UtcNow;
-            var isPayingCustomer = false;
-
-            PriorityManagerFactory factory = priority switch
-            {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                _ => throw new NotImplementedException(),
-            };
-            factory.RaisedPriority();
-            factory.CalculatePrice();
-            factory.NotifyAdministrator();
-
-            Assert.AreEqual(0, factory.Price);
-        }
-
-        [Test]
-        public void MediumPriorityWasNotPayTest()
-        {
-            var title = "System Failure";
-            var priority = Priority.Medium;
-            var assignedTo = "Johan";
-            var createdTime = DateTime.UtcNow;
-            var isPayingCustomer = false;
-
-            PriorityManagerFactory factory = priority switch
-            {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                _ => throw new NotImplementedException(),
-            };
-            factory.RaisedPriority();
-            factory.CalculatePrice();
-            factory.NotifyAdministrator();
-
-            Assert.AreEqual(0, factory.Price);
-        }
-
-        [Test]
-        public void HighPriorityWasNotPayTest()
-        {
-            var title = "System Failure";
-            var priority = Priority.High;
-            var assignedTo = "Johan";
-            var createdTime = DateTime.UtcNow;
-            var isPayingCustomer = false;
-
-            PriorityManagerFactory factory = priority switch
-            {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _nullUserRepository),
-                _ => throw new NotImplementedException(),
-            };
-            factory.RaisedPriority();
-            factory.CalculatePrice();
-            factory.NotifyAdministrator();
-
-            Assert.AreEqual(0, factory.Price);
         }
     }
 }

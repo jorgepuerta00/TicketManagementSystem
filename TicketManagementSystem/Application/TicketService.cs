@@ -10,7 +10,7 @@ namespace TicketManagementSystem
 {
     public class TicketService
     {
-        private readonly UserRepository _userRepository = new UserRepository();
+        private PriorityManagerFactory PriorityManagerFactory;
 
         public int CreateTicket(string title, Priority priority, string assignedTo, string description, DateTime createdTime, bool isPayingCustomer)
         {
@@ -18,50 +18,40 @@ namespace TicketManagementSystem
             description.ThrowIfArgumentIsEmptyOrNull("Title or description were null");
 
             User user = null;
-            using (var ur = new UserRepository())
+            using (var userRepository = new UserRepository())
             {
                 if (assignedTo != null)
                 {
-                    user = ur.GetUser(assignedTo);
+                    user = userRepository.GetUser(assignedTo);
                 }
-            }
-            user.ThrowIfArgumentIsNull("User " + assignedTo + " not found");
+                user.ThrowIfArgumentIsNull("User " + assignedTo + " not found");
 
-            PriorityManagerFactory factory = priority switch
-            {
-                Priority.Low => new LowPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.Medium => new MediumPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                Priority.High => new HighPriority(title, assignedTo, isPayingCustomer, createdTime, _userRepository),
-                _ => throw new NotImplementedException(),
-            };
-            factory.RaisedPriority();
-            factory.CalculatePrice();
-            factory.NotifyAdministrator();
+                StrategyPriorityManager StrategyPriorityManager = new StrategyPriorityManager(title, assignedTo, isPayingCustomer, createdTime, userRepository);
+                PriorityManagerFactory = StrategyPriorityManager.GetStrategyPriorityManager(priority);
+            }
 
             var ticket = new Ticket()
             {
-                Title = title,
+                Title = PriorityManagerFactory.Title,
                 AssignedUser = user,
-                Priority = priority,
+                Priority = PriorityManagerFactory.Priority,
                 Description = description,
-                Created = createdTime,
-                PriceDollars = factory.Price,
-                AccountManager = factory.AccountManager
+                Created = PriorityManagerFactory.CreatedTime,
+                PriceDollars = PriorityManagerFactory.Price,
+                AccountManager = PriorityManagerFactory.AccountManager
             };
 
-            var id = TicketRepository.CreateTicket(ticket);
-
-            return id;
+            return TicketRepository.CreateTicket(ticket);
         }
 
         public void AssignTicket(int ticketId, string username)
         {
             User user = null;
-            using (var ur = new UserRepository())
+            using (var userRepository = new UserRepository())
             {
                 if (username != null)
                 {
-                    user = ur.GetUser(username);
+                    user = userRepository.GetUser(username);
                 }
             }
             user.ThrowIfArgumentIsNull("User not found");
